@@ -1,0 +1,34 @@
+{
+	"folders": [
+		{
+			"name": "nova (1.16.5)",
+			"path": "."
+		},
+		{
+			"name": "mc resources",
+			"path": "C:\\Users\\Dmtrllv\\AppData\\Roaming\\.minecraft\\versions\\1.16.5\\resources"
+		}
+	],
+	"settings": {
+		"files.exclude": {
+			"**/.git": true,
+			"**/.svn": true,
+			"**/.hg": true,
+			"**/CVS": true,
+			"**/.DS_Store": true,
+			"**/.gradle": true,
+			"**/.settings": true,
+			// "**/.vscode": true,
+			"bin": true,
+			"**/build": true,
+			"**/gradle": true,
+			// "run": true,
+			"src/generated": true,
+			".project": true,
+			"gradlew": true,
+			"gradlew.bat": true,
+			"gradle.properties": true,
+			".classpath": true
+		}
+	}
+}
