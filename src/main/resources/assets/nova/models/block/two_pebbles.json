@@ -1,6 +1,7 @@
 {
 	"parent": "nova:block/two_pebbles_template",
 	"textures": {
-		"all": "minecraft:block/stone"
+		"all": "minecraft:block/stone",
+		"particle": "minecraft:block/stone"
 	}
 }
