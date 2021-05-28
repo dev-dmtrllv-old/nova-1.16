@@ -1,11 +1,13 @@
 package com.dmtrllv.nova;
 
+// import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.color.BlockColors;
 import net.minecraft.client.renderer.color.ItemColors;
 import net.minecraft.client.renderer.tileentity.SignTileEntityRenderer;
 import net.minecraft.item.BlockItem;
+// import net.minecraft.util.registry.Registry;
 import net.minecraft.world.FoliageColors;
 import net.minecraft.world.biome.BiomeColors;
 import net.minecraftforge.client.event.ModelRegistryEvent;
@@ -22,7 +24,8 @@ import com.dmtrllv.nova.block.NovaWoodType;
 import com.dmtrllv.nova.item.NovaItems;
 import com.dmtrllv.nova.renderer.NovaAtlases;
 import com.dmtrllv.nova.tileentity.NovaTileEntityType;
-import com.dmtrllv.nova.world.gen.feature.NovaFeatures;
+import com.dmtrllv.nova.world.biome.NovaBiomes;
+// import com.dmtrllv.nova.world.gen.feature.NovaFeatures;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -40,26 +43,25 @@ public class Nova
 		NovaBlocks.REGISTRY.register(bus);
 		NovaItems.REGISTRY.register(bus);
 		NovaTileEntityType.REGISTRY.register(bus);
-
+		NovaBiomes.REGISTRY.register(bus);
+		
 		bus.addListener(this::onCommonSetup);
 		bus.addListener(this::onClientSetup);
 		bus.addListener(this::onModelRegistryEvent);
+		// Registry.BIOME_SOURCE
 	}
 
 	private void initColors(ItemColors itemColors, BlockColors blockColors)
 	{
+		blockColors.register((a, b, c, d) ->
+		{
+			return b != null && c != null ? BiomeColors.getAverageFoliageColor(b, c) : FoliageColors.getDefaultColor();
+		}, NovaBlocks.WHITE_OAK_LEAVES.get());
+
 		itemColors.register((a, b) ->
 		{
 			BlockState blockstate = ((BlockItem) a.getItem()).getBlock().defaultBlockState();
 			return blockColors.getColor(blockstate, null, null, b);
-		}, NovaBlocks.WHITE_OAK_LEAVES.get());
-	}
-
-	private void initColors(BlockColors BlockColors)
-	{
-		BlockColors.register((a, b, c, d) ->
-		{
-			return b != null && c != null ? BiomeColors.getAverageFoliageColor(b, c) : FoliageColors.getDefaultColor();
 		}, NovaBlocks.WHITE_OAK_LEAVES.get());
 	}
 
@@ -69,10 +71,10 @@ public class Nova
 		DeferredWorkQueue.runLater(() ->
 		{
 			Minecraft m = Minecraft.getInstance();
-			this.initColors(m.getBlockColors());
-			this.initColors(m.getItemColors(), m.getBlockColors());
+			initColors(m.getItemColors(), m.getBlockColors());
+			NovaBiomes.addBiomeEntries();
+			NovaBiomes.fillBiomeDictionary();
 		});
-		NovaFeatures.register();
 	}
 
 	@SuppressWarnings("deprecation")
@@ -87,7 +89,6 @@ public class Nova
 		});
 
 		ClientRegistry.bindTileEntityRenderer(NovaTileEntityType.SIGN.get(), SignTileEntityRenderer::new);
-
 	}
 
 	private void onModelRegistryEvent(final ModelRegistryEvent event)

@@ -11,15 +11,9 @@ import net.minecraft.world.gen.feature.ConfiguredFeature;
 
 public class WhiteOakTree extends Tree
 {
-
 	@Nullable
 	protected ConfiguredFeature<BaseTreeFeatureConfig, ?> getConfiguredFeature(Random rand, boolean withBeeHive)
 	{
-		// if (rand.nextInt(10) == 0) {
-		// return withBeeHive ? Features.FANCY_OAK_BEES_005 : Features.FANCY_OAK;
-		// } else {
-		// return withBeeHive ? Features.OAK_BEES_005 : Features.OAK;
-		// }
-		return (ConfiguredFeature<BaseTreeFeatureConfig, ?>) NovaFeatures.WHITE_OAK.get();
+		return withBeeHive ? NovaFeatures.ConfiguredFeatures.WHITE_OAK_BEES : NovaFeatures.ConfiguredFeatures.WHITE_OAK;
 	}
 }
