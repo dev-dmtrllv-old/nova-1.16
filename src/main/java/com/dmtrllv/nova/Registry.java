@@ -1,50 +1,51 @@
 package com.dmtrllv.nova;
 
 import java.util.HashMap;
+import java.util.function.BiConsumer;
 import java.util.function.Supplier;
 
 import javax.annotation.Nullable;
 
+
 public class Registry<T>
 {
-	public final class Object
+	private boolean didRegister = false;
+	private final HashMap<String, RegistryObject<T>> objects = new HashMap<String, RegistryObject<T>>();
+
+	@Nullable
+	private BiConsumer<String, T> onRegistered = (id, o) -> {};
+
+	public Registry() {}
+
+	public Registry(BiConsumer<String, T> onRegistered) 
 	{
-		@Nullable
-		private T value = null;
-
-		public final String id;
-
-		private Supplier<T> supplier;
-
-		public T get()
-		{
-			return value;
-		}
-
-		public Object(String id, Supplier<T> supplier)
-		{
-			this.id = id;
-			this.supplier = supplier;
-		}
+		this.onRegistered = onRegistered;
 	}
 
-	private boolean didRegister = false;
-	private final HashMap<String, Object> objects = new HashMap<String, Object>();
-
-	public Object register(String id, Supplier<T> supplier)
+	@SuppressWarnings("unchecked")
+	public <S extends T> RegistryObject<S> register(String id, Supplier<S> supplier)
 	{
-		Object o = new Object(id, supplier);
-		objects.put(id, o);
+		RegistryObject<S> o = new RegistryObject<S>(id, supplier);
+		objects.put(id, (RegistryObject<T>)o);
 		return o;
+	}
+
+	public void forEach(BiConsumer<String, RegistryObject<T>> cb)
+	{
+		objects.forEach(cb);
 	}
 
 	public void register()
 	{
 		if (!didRegister)
 		{
-			this.objects.forEach((k, o) ->
+			this.objects.forEach((k, o) -> 
 			{
-				o.value = o.supplier.get();
+				if(!o.isRegistered())
+				{
+					T obj = o.register();
+					onRegistered.accept(k, obj);
+				}
 			});
 			didRegister = true;
 		}
@@ -52,7 +53,7 @@ public class Registry<T>
 
 	public T get(String id)
 	{
-		Object o = this.objects.get(id);
+		RegistryObject<T> o = this.objects.get(id);
 		if (o == null)
 			return null;
 		return o.get();

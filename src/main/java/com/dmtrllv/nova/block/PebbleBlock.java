@@ -85,10 +85,10 @@ public class PebbleBlock extends Block
 	}
 
 	@Nullable
-	public BlockState getStateForPlacement(BlockItemUseContext p_196258_1_)
+	public BlockState getStateForPlacement(BlockItemUseContext ctx)
 	{
-		BlockState blockstate = p_196258_1_.getLevel().getBlockState(p_196258_1_.getClickedPos());
-		return blockstate.is(this) ? blockstate.setValue(PEBBLES, Integer.valueOf(Math.min(4, blockstate.getValue(PEBBLES) + 1))) : super.getStateForPlacement(p_196258_1_);
+		BlockState blockstate = ctx.getLevel().getBlockState(ctx.getClickedPos());
+		return blockstate.is(this) ? blockstate.setValue(PEBBLES, Integer.valueOf(Math.min(4, blockstate.getValue(PEBBLES) + 1))) : super.getStateForPlacement(ctx);
 	}
 
 	public VoxelShape getShape(BlockState p_220053_1_, IBlockReader p_220053_2_, BlockPos p_220053_3_, ISelectionContext p_220053_4_)
