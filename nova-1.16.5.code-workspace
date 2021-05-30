@@ -18,17 +18,7 @@
 			"**/.DS_Store": true,
 			"**/.gradle": true,
 			"**/.settings": true,
-			// "**/.vscode": true,
-			"bin": true,
-			"**/build": true,
-			"**/gradle": true,
-			// "run": true,
-			"src/generated": true,
-			".project": true,
-			"gradlew": true,
-			"gradlew.bat": true,
-			"gradle.properties": true,
-			".classpath": true
+			"**/.vscode": true
 		}
 	}
 }
