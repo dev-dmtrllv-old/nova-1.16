@@ -68,4 +68,5 @@ public class NovaItems
 
 	public static final RegistryObject<Item> WHITE_OAK_SAPLING = register("white_oak_sapling", NovaBlocks.WHITE_OAK_SAPLING);
 	public static final RegistryObject<Item> WHITE_OAK_LEAVES = register("white_oak_leaves", NovaBlocks.WHITE_OAK_LEAVES);
+	public static final RegistryObject<Item> PEBBLE_TOOL = register("pebble_tool", () -> new PebbleToolItem(0.8F, -2.8F, new Item.Properties().tab(NovaItemGroup.NOVA_MOD_ITEMS)));
 }
