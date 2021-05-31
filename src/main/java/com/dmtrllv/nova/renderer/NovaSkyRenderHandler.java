@@ -37,23 +37,21 @@ public class NovaSkyRenderHandler implements ISkyRenderHandler
 {
 	private static final NovaSkyRenderHandler INSTANCE = new NovaSkyRenderHandler();
 
+	@Nullable
+	private static Minecraft minecraft = null;
+
 	public static void onFogDensityEvent(EntityViewRenderEvent.FogDensity event)
 	{
-		// Minecraft m = Minecraft.getInstance();
-		// m.player.level.dimension() == World.OVERWORLD && 
-		if(event.getType() == FogType.FOG_SKY && BloodMoonEvent.isBloodMoonActive())
+		if(minecraft != null && minecraft.player.level.dimension() == World.OVERWORLD && event.getType() == FogType.FOG_TERRAIN && BloodMoonEvent.isBloodMoonActive())
 		{
-			event.setDensity(0.3F);
+			event.setDensity(0.35F);
 		}
 	}
 
 	public static void onFogColorEvent(EntityViewRenderEvent.FogColors event)
 	{
-		if(BloodMoonEvent.isBloodMoonActive())
-		{
-			event.setRed(0.2f);
-		}
-		
+		if(minecraft != null && minecraft.player.level.dimension() == World.OVERWORLD)
+			event.setRed(BloodMoonEvent.getRedColor(event.getRed()));
 	}
 
 	private static final ResourceLocation SUN_LOCATION = new ResourceLocation("textures/environment/sun.png");
@@ -64,8 +62,8 @@ public class NovaSkyRenderHandler implements ISkyRenderHandler
 
 	public static void initialize(RenderWorldLastEvent event)
 	{
-		Minecraft m = Minecraft.getInstance();
-		m.level.effects().setSkyRenderHandler(INSTANCE);
+		NovaSkyRenderHandler.minecraft = Minecraft.getInstance();
+		minecraft.level.effects().setSkyRenderHandler(INSTANCE);
 	}
 
 	@Nullable
@@ -80,19 +78,15 @@ public class NovaSkyRenderHandler implements ISkyRenderHandler
 	@Nullable
 	private VertexBuffer darkBloodMoonBuffer;
 
-	private final Minecraft minecraft;
-
 	private final ClientWorld level;
 
 	private final VertexFormat skyFormat = DefaultVertexFormats.POSITION;
 
 	private TextureManager textureManager;
 
-	private double day = 0;
-
 	private NovaSkyRenderHandler()
 	{
-		this.minecraft = Minecraft.getInstance();
+		minecraft = Minecraft.getInstance();
 		this.level = minecraft.level;
 		this.textureManager = minecraft.getTextureManager();
 
@@ -295,11 +289,11 @@ public class NovaSkyRenderHandler implements ISkyRenderHandler
 	@Override @SuppressWarnings({ "deprecation", "unused" })
 	public void render(int ticks, float partialTicks, MatrixStack matrixStack, ClientWorld world, Minecraft mc)
 	{
-		if (this.minecraft.level.effects().skyType() == DimensionRenderInfo.FogType.END)
+		if (minecraft.level.effects().skyType() == DimensionRenderInfo.FogType.END)
 		{
 			this.renderEndSky(matrixStack);
 		}
-		else if (this.minecraft.level.effects().skyType() == DimensionRenderInfo.FogType.NORMAL)
+		else if (minecraft.level.effects().skyType() == DimensionRenderInfo.FogType.NORMAL)
 			{
 				RenderSystem.disableTexture();
 				Vector3d vector3d = level.getSkyColor(minecraft.gameRenderer.getMainCamera().getBlockPosition(), partialTicks);
@@ -405,7 +399,7 @@ public class NovaSkyRenderHandler implements ISkyRenderHandler
 				matrixStack.popPose();
 				RenderSystem.disableTexture();
 				RenderSystem.color3f(0.0F, 0.0F, 0.0F);
-				double d0 = this.minecraft.player.getEyePosition(partialTicks).y - this.level.getLevelData().getHorizonHeight();
+				double d0 = minecraft.player.getEyePosition(partialTicks).y - this.level.getLevelData().getHorizonHeight();
 				if (d0 < 0.0D)
 				{
 					matrixStack.pushPose();
