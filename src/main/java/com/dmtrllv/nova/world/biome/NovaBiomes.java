@@ -41,15 +41,6 @@ public class NovaBiomes
 			BiomeDictionary.addTypes(RegistryKey.create(Registry.BIOME_REGISTRY, biome.getId()), new BiomeDictionary.Type[] { BiomeDictionary.Type.OVERWORLD });
 	}
 
-	// public static void overwriteVanillaBiomes(Collection<Biome> biomes)
-	// {
-	// 	LogManager.getLogger().info("OVERWRITE VANILLA BIOMES");
-	// 	for (Biome biome : biomes)
-	// 	{
-			
-	// 	}
-	// }
-
 	private static RegistryObject<Biome> register(String id, Supplier<NovaBiome> biomeSupplier)
 	{
 		return REGISTRY.register(id, () -> biomeSupplier.get().getBiome());
@@ -57,13 +48,10 @@ public class NovaBiomes
 
 	public static void onBiomeLoaded(BiomeLoadingEvent biome)
 	{
-		// LogManager.getLogger().info("on biome load " + biome.getName());
 		if (biome.getCategory() == Biome.Category.PLAINS || biome.getCategory() == Biome.Category.RIVER)
 		{
-			// add pebbles
 			LogManager.getLogger().info("pebbles added to " + biome.getName());
 			biome.getGeneration().getFeatures(GenerationStage.Decoration.VEGETAL_DECORATION).add(() -> NovaConfiguredFeatures.PATCH_PEBBLES.get());
-			
 		}
 	}
 

@@ -23,8 +23,10 @@ import com.dmtrllv.nova.block.NovaBlocks;
 import com.dmtrllv.nova.block.NovaWoodType;
 import com.dmtrllv.nova.item.NovaItems;
 import com.dmtrllv.nova.renderer.NovaAtlases;
+import com.dmtrllv.nova.renderer.NovaSkyRenderHandler;
 import com.dmtrllv.nova.tileentity.NovaTileEntityType;
 import com.dmtrllv.nova.world.biome.NovaBiomes;
+import com.dmtrllv.nova.world.events.BloodMoonEvent;
 import com.dmtrllv.nova.world.gen.feature.NovaConfiguredFeatures;
 import com.dmtrllv.nova.world.gen.feature.NovaFeatures;
 
@@ -52,6 +54,10 @@ public class Nova
 		bus.addListener(this::onModelRegistryEvent);
 		
 		MinecraftForge.EVENT_BUS.addListener(NovaBiomes::onBiomeLoaded);
+        MinecraftForge.EVENT_BUS.addListener(NovaSkyRenderHandler::initialize);
+        MinecraftForge.EVENT_BUS.addListener(NovaSkyRenderHandler::onFogDensityEvent);
+        MinecraftForge.EVENT_BUS.addListener(NovaSkyRenderHandler::onFogColorEvent);
+		MinecraftForge.EVENT_BUS.addListener(BloodMoonEvent::onTick);
 	}
 
 	private void initColors(ItemColors itemColors, BlockColors blockColors)
