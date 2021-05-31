@@ -5,6 +5,7 @@ import com.dmtrllv.nova.block.NovaBlocks;
 import com.google.common.base.Supplier;
 
 import net.minecraft.block.Block;
+import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
@@ -69,4 +70,6 @@ public class NovaItems
 	public static final RegistryObject<Item> WHITE_OAK_SAPLING = register("white_oak_sapling", NovaBlocks.WHITE_OAK_SAPLING);
 	public static final RegistryObject<Item> WHITE_OAK_LEAVES = register("white_oak_leaves", NovaBlocks.WHITE_OAK_LEAVES);
 	public static final RegistryObject<Item> PEBBLE_TOOL = register("pebble_tool", () -> new PebbleToolItem(0.8F, -2.8F, new Item.Properties().tab(NovaItemGroup.NOVA_MOD_ITEMS)));
+
+	public static final RegistryObject<Item> GOLDEN_CROWN = register("golden_crown", () -> new NovaArmorItem("nova:textures/models/armor/processed_gold_layer_1.png", NovaArmorMaterial.PROCESSED_GOLD, EquipmentSlotType.HEAD, (new Item.Properties()).tab(NovaItemGroup.NOVA_MOD_ITEMS)));
 }
